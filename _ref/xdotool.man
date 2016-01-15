@@ -1,0 +1,205 @@
+NAME
+       xdotool - command-line X11 automation tool
+
+
+
+SYNOPSIS
+       xdotool cmd args...
+
+
+
+DESCRIPTION
+       xdotool lets you programatically (or manually) simulate keyboard input
+       and mouse activity, move and resize windows, etc. It does this using
+       X11’s XTEST extension and other Xlib functions.
+
+       There is some support for Extended Window Manager Hints (aka EWMH or
+       NetWM).  See the "EXTENDED WINDOW MANAGER HINTS" section for more
+       information.
+
+
+
+KEYBOARD COMMANDS
+       key keystroke
+           Type a given keystroke. Examples being "alt+r", "Control_L+J",
+           "ctrl+alt+n", "BackSpace".
+
+           Generally, any valid X Keysym string will work. Multiple keys are
+           separated by ’+’. Aliases exist for "alt", "ctrl", "shift",
+           "super", and "meta" which all map to Foo_L, such as Alt_L and
+           Control_L, etc.
+
+           Example: Send the keystroke "F2"
+            xdotool key F2
+
+       keydown keystroke
+           Same as above, except only keydown events are sent.
+
+       keyup keystroke
+           Same as above, except only keyup events are sent.
+
+       type something to type
+           Types a series of letters. In order, as fast as possible.
+
+           Example: to type ’Hello world!’ you would do:
+            xdotool type ’Hello world!’
+
+
+
+MOUSE COMMANDS
+       mousemove x y
+           Move the mouse to the specific X and Y coordinates on the screen
+
+       mousedown button
+           Send ’mouse down’ for the given button. 1 == left, 2 ==  middle,  3
+           == right, etc.
+
+       mouseup button
+           Send ’mouse up for the given button
+
+       click button
+           Send mousedown followed by mouseup for the given button
+
+       getmouselocation
+           Outputs the x, y, and screen location of the mouse cursor. Screen
+           numbers will be nonzero if you have multiple monitors and are not
+           using Xinerama.
+
+
+
+WINDOW COMMANDS
+       search [options] somestring
+           Search  for windows with titles, names, or classes matching
+           somestring.  The output is line-delimited list of X window
+           identifiers
+
+           The options available are:
+
+           --onlyvisible - Show only visible windows in the results.
+           --title - Match against the window title
+           --name - Match against the window name
+           --class - Match against the window class
+
+           The default options are "--title --name --class"
+
+       getwindowfocus [-f]
+           Prints the window id of the currently focused window.
+
+           If the current window has no WM_CLASS property, we assume it is not
+           a normal top-level window and traverse up the parents until we find
+           a window with a WM_CLASS set and return that window id.
+
+           If you really want the window currently having focus and don’t care
+           if it has a WM_CLASS setting, then use ’getwindowfocus -f’
+
+       windowsize [options] windowid width height
+           Set the window size of the given window
+
+           The options available are:
+
+           --usehints - Use window sizing hints when setting width and height.
+           This is useful on terminals.
+
+           Example: To set a terminal to be 80x24 characters, you would use:
+           "xdotool windowsize --usehints windowid 80 24"
+
+       windowmove windowid x y
+           Move the window to the given position
+
+       windowfocus windowid
+           Focus the window
+
+       windowmap window_id
+           Map a window. In X11 terminology, mapping a window means making it
+           visible on the screen.
+
+       windowraise window_id
+           Raise the window to the top of the stack. This may not work on all
+           window managers.
+
+       windowunmap window_id
+           Unmap a window, making it no longer appear on your screen.
+
+
+
+DESKTOP AND WINDOW COMMANDS
+       These commands follow the EWMH standard. See the section "EXTENDED
+       WINDOW MANAGER HINTS" for more information.
+
+       windowactivate windowid
+           Activate the window. This command is different from windowfocus: if
+           the window is on another desktop, we will switch to that desktop.
+           It also uses a different method for bringing the window up. I
+           recommend trying this command before using windowfocus, as it will
+           work on more window managers.
+
+       getactivewindow
+           Output the current active window. This command is often more
+           reliable than getwindowfocus.
+
+       set_num_desktops number
+           Changes the number of desktops or workspaces.
+
+       get_num_desktops
+           Output the current number of desktops.
+
+       set_desktop desktop_number
+           Change the current view to the specified desktop.
+
+       get_desktop
+           Output the current desktop in view.
+
+       set_desktop_for_window window_id desktop_number
+           Move a window to a different desktop.
+
+       get_desktop_for_window window_id
+           Output the desktop currently containing the given window.
+
+
+
+EXTENDED WINDOW MANAGER HINTS
+       The following pieces of the EWMH standard are supported:
+
+       _NET_SUPPORTED
+           Asks the window manager what is supported
+
+       _NET_CURRENT_DESKTOP
+           Query and set the current desktop. Support for this enables these
+           commands: "set_desktop", "get_desktop".
+
+       _NET_WM_DESKTOP
+           Query and set what desktop a window is living in. Support for this
+           enables these commands: "set_desktop_for_window",
+           "get_desktop_for_window".
+
+       _NET_ACTIVE_WINDOW
+           Allows you to query and set the active window by asking the window
+           manager to bring it forward. Support for this enables these
+           commands: "windowactivate", "getactivewindow".
+
+
+
+SEE ALSO
+       xprop(1), xwininfo(1),
+
+       Project site: <http://www.semicomplete.com/projects/xdotool>
+
+       Google Code: <http://semicomplete.googlecode.com/>
+
+
+
+CONTACT
+       Please send questions to xdotool-users@googlegroups.com. File bugs and
+       feature requests at the following URL:
+
+       <http://code.google.com/p/semicomplete/issues/list>
+
+
+
+AUTHOR
+       xdotool was written by Jordan Sissel.
+
+       This manual page was written originally by Daniel Kahn Gillmor
+       <dkg@fifthhorseman.net> for the Debian project (but may be used by
+       others). It is maintained by Jordan Sissel.
+
