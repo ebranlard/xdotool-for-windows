@@ -1,6 +1,7 @@
 
 CSC=csc
 CSC=mcs
+CSFLAGS=/r:System.Windows.Forms.dll
 
 PROG=xdotool.exe
 
@@ -9,7 +10,7 @@ PROG=xdotool.exe
 all: $(PROG) test
 
 $(PROG): xdotool.cs
-	$(CSC) xdotool.cs
+	$(CSC) xdotool.cs $(CSFLAGS)
 
 
 test:
