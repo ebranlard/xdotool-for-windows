@@ -16,3 +16,6 @@ $(PROG): xdotool.cs
 test:
 	$(PROG) -h
 	$(PROG) key "{Escape}^v"
+
+clean:
+	del $(PROG)

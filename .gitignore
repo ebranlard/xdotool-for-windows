@@ -1,1 +1,2 @@
-*.exe
+.\xdotool.exe
+_dev/*.exe
